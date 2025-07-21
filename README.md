@@ -135,4 +135,3 @@ Project Link: [https://github.com/sharonn-madan/SignSpeak](https://github.com/sh
 ---
 
 <p align="center">Made with ❤️ for the deaf and hard-of-hearing community</p>
->>>>>>> 3fbd65e (Initial commit)
