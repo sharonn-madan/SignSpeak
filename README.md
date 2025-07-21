@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# SignSpeak
-=======
 # SignSpeak
 
 ![SignSpeak Logo](https://github.com/Mukunj-21/SignSpeak/raw/main/Images/Logo.png)
