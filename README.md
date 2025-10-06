@@ -40,7 +40,7 @@ SignSpeak is an advanced, machine learning-powered application that bridges the 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/Mukunj-21/SignSpeak.git
+   git clone https://github.com/sharonn-madan/SignSpeak.git
    cd SignSpeak
    ```
 
@@ -70,42 +70,40 @@ SignSpeak is an advanced, machine learning-powered application that bridges the 
 
 ## How It Works
 
-SignSpeak uses a deep learning approach to recognize sign language gestures:
+SignSpeak uses a landmark-based approach rather than processing raw pixels, leading to a highly efficient pipeline:
 
-1. **Hand Detection**: OpenCV processes webcam input to isolate hand regions
-2. **Feature Extraction**: Key points and hand shapes are identified and normalized
-3. **Classification**: Our custom CNN model classifies the hand gesture into corresponding letters/words
-4. **Translation**: Recognized signs are converted to text and optionally speech
-5. **User Interface**: Results are displayed in real-time through our Flask-powered web interface
+1. **Webcam Input**: The application captures video from the webcam using OpenCV.
+2. **Hand Landmark Detection**: Each frame is processed by MediaPipe, which detects the user's hand and generates a 21-point skeletal model.
+3. **Feature Engineering**: The coordinates of these 21 landmarks are normalized to make them independent of the hand's position and scale in the frame. This creates a 42-point feature vector.
+4. **Classification**: The feature vector is fed into a pre-trained Random Forest Classifier which predicts the corresponding ASL sign.
+5. **User Interface**: The prediction is displayed on the Flask-powered web interface. A stabilization buffer and delay are used to ensure a smooth and accurate user experience.
+
+
 
 ## Model Architecture
 
-Our CNN model was trained on a dataset of over 20,000 sign language images covering the ASL alphabet and common phrases. The architecture includes:
+The model is a Random Forest Classifier from the Scikit-learn library, chosen for its speed and effectiveness with tabular data.:
 
-- Input layer for normalized hand images (64x64x1)
-- 4 convolutional layers with max-pooling
-- 2 fully connected layers
-- Dropout layers to prevent overfitting
-- SoftMax output layer for multi-class classification
+- Model: RandomForestClassifier()
+- Input Features: A 42-element vector representing the normalized x and y coordinates of 21 key hand landmarks.
+- Dataset: The model was trained on a custom-built dataset of 3,800 images (100 samples for each of 38 classes), which were converted into landmark feature vectors. This approach makes the model lightweight and robust.
 
 ## Technology Stack
 
 - **Backend**: Python, Flask
-- **Machine Learning**: TensorFlow, Keras, OpenCV
-- **Frontend**: HTML, CSS, JavaScript, Bootstrap
-- **Data Processing**: NumPy, Pandas
-- **Deployment**: Docker support for easy deployment
+- **Machine Learning**: Scikit-learn, MediaPipe, OpenCV
+- **Frontend**: HTML, CSS, JavaScript
+- **Data Processing**: NumPy
 
 ## Future Roadmap
 
-- [x] Basic ASL alphabet recognition
-- [x] Web interface implementation
-- [x] Real-time processing optimization
-- [ ] Support for full ASL grammar and syntax
-- [ ] Mobile application development
-- [ ] Offline mode functionality
-- [ ] Multi-language sign language support
-- [ ] Integration with AR/VR platforms
+- [X] ASL alphabet and number recognition
+- [x] Real-time web interface with text-to-speech
+- [x] Gesture stabilization and usability enhancements
+- [ ] Improve Model Generalization: Expand the dataset with more samples from a diverse group of users to reduce overfitting and improve accuracy.
+- [ ] Support for Dynamic Gestures: Implement an RNN/LSTM model to recognize full words and phrases that involve movement.
+- [ ] Mobile Application Development: Package the application for iOS and Android for wider accessibility.
+- [ ] Offline Mode Functionality: Allow the application to run without an internet connection.
 
 ## Contributing
 
@@ -123,8 +121,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- [ASL Dataset Contributors](https://www.kaggle.com/datasets/grassknoted/asl-alphabet)
-- All open-source libraries and tools used in this project
+- The open-source communities behind Scikit-learn, MediaPipe, OpenCV, and Flask.
 
 ## Contact
 
